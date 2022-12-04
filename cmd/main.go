@@ -26,6 +26,7 @@ var indexHTML string
 var indexTpl = template.Must(template.New("").Parse(indexHTML))
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	if err := updatePictures(); err != nil {
 		log.Println(err)
 		return
@@ -33,6 +34,7 @@ func main() {
 
 	mux.HandleFunc("/", Handle)
 	mux.HandleFunc("/update", Update)
+	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("OK")) })
 	log.Println("listen and server at :9288")
 	log.Println(suffix)
 	if err := http.ListenAndServe(":9288", mux); err != nil {
