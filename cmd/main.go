@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	_ "embed"
 	"encoding/base64"
 	"fmt"
@@ -143,8 +144,12 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	d.Next = idx + 1
 
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+	w.Header().Set("Content-Encoding", "gzip")
 	w.WriteHeader(200)
-	if err := indexTpl.Execute(w, &d); err != nil {
+	gz := gzip.NewWriter(w)
+	defer gz.Close()
+
+	if err := indexTpl.Execute(gz, &d); err != nil {
 		log.Println(err)
 	}
 }
