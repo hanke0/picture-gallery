@@ -101,6 +101,7 @@ func FilePathWalkDir(root string) ([]string, error) {
 type Data struct {
 	Current int
 	Next    int
+	Size    int
 	Picture string
 	Name    string
 }
@@ -142,6 +143,7 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 	}
 	d.Current = idx
 	d.Next = idx + 1
+	d.Size = len(pictures.pictures)
 
 	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 	w.Header().Set("Content-Encoding", "gzip")
